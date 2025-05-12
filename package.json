@@ -69,5 +69,8 @@
   },
   "optionalDependencies": {
     "@nestjs/graphql": "~12.2.0"
+  },
+  "dependencies": {
+    "@sentry/types": "^9.17.0"
   }
 }
