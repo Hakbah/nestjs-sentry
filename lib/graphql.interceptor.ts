@@ -2,7 +2,8 @@ import { ExecutionContext, Injectable } from "@nestjs/common";
 import type { GqlContextType } from '@nestjs/graphql';
 
 // Sentry imports
-import { Handlers, Scope } from '@sentry/node';
+import { Scope } from '@sentry/node';
+import { httpRequestToRequestData } from '@sentry/core';
 import { SentryInterceptor } from ".";
 
 let GqlExecutionContext: any;
@@ -30,12 +31,9 @@ export class GraphqlInterceptor extends SentryInterceptor {
 
         if (context.req) {
             // req within graphql context needs modification in
-            const data = Handlers.parseRequest(<any>{}, context.req, {});
+            const data = httpRequestToRequestData(context.req);
 
-            scope.setExtra('req', data.request);
-
-            if (data.extra) scope.setExtras(data.extra);
-            if (data.user) scope.setUser(data.user);
+            scope.setExtra('req', data);
         }
 
         this.client.instance().captureException(exception);

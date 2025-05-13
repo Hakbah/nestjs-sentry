@@ -1,6 +1,6 @@
 import { CallHandler, ExecutionContext, HttpException, NestInterceptor } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { Scope } from '@sentry/hub';
+import { Scope } from '@sentry/node';
 import { SentryService } from './sentry.service';
 import { SentryInterceptorOptions } from './sentry.interfaces';
 export declare class SentryInterceptor implements NestInterceptor {

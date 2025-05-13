@@ -41,24 +41,23 @@ let SentryService = SentryService_1 = class SentryService extends common_1.Conso
     constructor(opts) {
         super();
         this.opts = opts;
-        this.app = '@ntegral/nestjs-sentry: ';
         if (!(opts && opts.dsn)) {
             return;
         }
         const { debug, integrations = [] } = opts, sentryOptions = __rest(opts, ["debug", "integrations"]);
         Sentry.init(Object.assign(Object.assign({}, sentryOptions), { integrations: [
-                new Sentry.Integrations.OnUncaughtException({
+                Sentry.onUncaughtExceptionIntegration({
                     onFatalError: (err) => __awaiter(this, void 0, void 0, function* () {
                         if (err.name === 'SentryError') {
                             console.log(err);
                         }
                         else {
-                            Sentry.getCurrentHub().getClient().captureException(err);
+                            Sentry.getClient().captureException(err);
                             process.exit(1);
                         }
                     }),
                 }),
-                new Sentry.Integrations.OnUnhandledRejection({ mode: 'warn' }),
+                Sentry.onUnhandledRejectionIntegration({ mode: 'warn' }),
                 ...integrations,
             ] }));
     }
@@ -69,7 +68,6 @@ let SentryService = SentryService_1 = class SentryService extends common_1.Conso
         return SentryService_1.serviceInstance;
     }
     log(message, context, asBreadcrumb) {
-        message = `${this.app} ${message}`;
         try {
             super.log(message, context);
             asBreadcrumb ?
@@ -85,7 +83,6 @@ let SentryService = SentryService_1 = class SentryService extends common_1.Conso
         catch (err) { }
     }
     error(message, trace, context) {
-        message = `${this.app} ${message}`;
         try {
             super.error(message, trace, context);
             Sentry.captureMessage(message, 'error');
@@ -93,7 +90,6 @@ let SentryService = SentryService_1 = class SentryService extends common_1.Conso
         catch (err) { }
     }
     warn(message, context, asBreadcrumb) {
-        message = `${this.app} ${message}`;
         try {
             super.warn(message, context);
             asBreadcrumb ?
@@ -109,7 +105,6 @@ let SentryService = SentryService_1 = class SentryService extends common_1.Conso
         catch (err) { }
     }
     debug(message, context, asBreadcrumb) {
-        message = `${this.app} ${message}`;
         try {
             super.debug(message, context);
             asBreadcrumb ?
@@ -125,7 +120,6 @@ let SentryService = SentryService_1 = class SentryService extends common_1.Conso
         catch (err) { }
     }
     verbose(message, context, asBreadcrumb) {
-        message = `${this.app} ${message}`;
         try {
             super.verbose(message, context);
             asBreadcrumb ?
