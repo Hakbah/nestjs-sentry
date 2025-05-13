@@ -67,7 +67,7 @@ export class SentryCoreModule {
           },
         ];
       }
-    
+
       private static createAsyncOptionsProvider(
         options: SentryModuleAsyncOptions,
       ): Provider {
