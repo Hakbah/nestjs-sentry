@@ -16,7 +16,8 @@ import {
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 // Sentry imports
-import { Handlers, Scope} from '@sentry/node';
+import { Scope } from '@sentry/node';
+import { httpRequestToRequestData } from '@sentry/core';
 
 import { SentryService } from './sentry.service';
 import { SentryInterceptorOptions, SentryInterceptorOptionsFilter } from './sentry.interfaces';
@@ -67,12 +68,9 @@ export class SentryInterceptor implements NestInterceptor {
   }
 
   private captureHttpException(scope: Scope, http: HttpArgumentsHost, exception: HttpException): void {
-    const data = Handlers.parseRequest(<any>{},http.getRequest(), this.options);
+    const data = httpRequestToRequestData(http.getRequest());
 
-    scope.setExtra('req', data.request);
-
-    if (data.extra) scope.setExtras(data.extra);
-    if (data.user) scope.setUser(data.user);
+    scope.setExtra('req', data);
 
     this.client.instance().captureException(exception);
   }
