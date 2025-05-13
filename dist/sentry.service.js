@@ -67,18 +67,16 @@ let SentryService = SentryService_1 = class SentryService extends common_1.Conso
         }
         return SentryService_1.serviceInstance;
     }
-    log(message, context, asBreadcrumb) {
+    log(message, context, asBreadcrumb = true) {
         try {
             super.log(message, context);
-            asBreadcrumb ?
-                Sentry.addBreadcrumb({
-                    message,
+            asBreadcrumb
+                ? Sentry.addBreadcrumb({
+                    category: context,
                     level: 'log',
-                    data: {
-                        context
-                    }
-                }) :
-                Sentry.captureMessage(message, 'log');
+                    message,
+                })
+                : Sentry.captureMessage(message, 'log');
         }
         catch (err) { }
     }
@@ -89,53 +87,59 @@ let SentryService = SentryService_1 = class SentryService extends common_1.Conso
         }
         catch (err) { }
     }
-    warn(message, context, asBreadcrumb) {
+    warn(message, context, asBreadcrumb = true) {
         try {
             super.warn(message, context);
-            asBreadcrumb ?
-                Sentry.addBreadcrumb({
-                    message,
+            asBreadcrumb
+                ? Sentry.addBreadcrumb({
+                    category: context,
                     level: 'warning',
-                    data: {
-                        context
-                    }
-                }) :
-                Sentry.captureMessage(message, 'warning');
+                    message,
+                })
+                : Sentry.captureMessage(message, 'warning');
         }
         catch (err) { }
     }
-    debug(message, context, asBreadcrumb) {
+    debug(message, context, asBreadcrumb = true) {
         try {
             super.debug(message, context);
-            asBreadcrumb ?
-                Sentry.addBreadcrumb({
-                    message,
+            asBreadcrumb
+                ? Sentry.addBreadcrumb({
+                    category: context,
                     level: 'debug',
-                    data: {
-                        context
-                    }
-                }) :
-                Sentry.captureMessage(message, 'debug');
+                    message,
+                })
+                : Sentry.captureMessage(message, 'debug');
         }
         catch (err) { }
     }
-    verbose(message, context, asBreadcrumb) {
+    verbose(message, context, asBreadcrumb = true) {
         try {
             super.verbose(message, context);
-            asBreadcrumb ?
-                Sentry.addBreadcrumb({
-                    message,
+            asBreadcrumb
+                ? Sentry.addBreadcrumb({
+                    category: context,
                     level: 'info',
-                    data: {
-                        context
-                    }
-                }) :
-                Sentry.captureMessage(message, 'info');
+                    message,
+                })
+                : Sentry.captureMessage(message, 'info');
         }
         catch (err) { }
     }
     instance() {
         return Sentry;
+    }
+    setSentryContext(name, context) {
+        Sentry.setContext(name, context);
+    }
+    setTag(name, value) {
+        Sentry.setTag(name, value);
+    }
+    addBreadcrumb(breadcrumb) {
+        Sentry.addBreadcrumb(breadcrumb);
+    }
+    withScope(callback) {
+        Sentry.withScope(callback);
     }
     onApplicationShutdown(signal) {
         var _a, _b, _c;
