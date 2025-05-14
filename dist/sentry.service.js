@@ -141,6 +141,9 @@ let SentryService = SentryService_1 = class SentryService extends common_1.Conso
     withScope(callback) {
         Sentry.withScope(callback);
     }
+    withIsolationScope(callback) {
+        Sentry.withIsolationScope(callback);
+    }
     onApplicationShutdown(signal) {
         var _a, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {

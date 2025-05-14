@@ -130,6 +130,10 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
     Sentry.withScope(callback);
   }
 
+   withIsolationScope(callback: (scope: Sentry.Scope) => void): void {
+    Sentry.withIsolationScope(callback);
+  }
+
   async onApplicationShutdown(signal?: string) {
     if (this.opts?.close?.enabled === true) {
       await Sentry.close(this.opts?.close.timeout);

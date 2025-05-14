@@ -18,5 +18,6 @@ export declare class SentryService extends ConsoleLogger implements OnApplicatio
     setTag(name: string, value: string): void;
     addBreadcrumb(breadcrumb: Breadcrumb): void;
     withScope(callback: (scope: Sentry.Scope) => void): void;
+    withIsolationScope(callback: (scope: Sentry.Scope) => void): void;
     onApplicationShutdown(signal?: string): Promise<void>;
 }
