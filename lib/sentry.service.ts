@@ -71,6 +71,13 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
     } catch (err) {}
   }
 
+  errorWithStackTrace(error: Error): void {
+    try {
+      super.error(error.message, error.stack);
+      Sentry.captureException(error);
+    } catch (err) {}
+  }
+
   warn(message: string, context?: string, asBreadcrumb = true): void {
     try {
       super.warn(message, context);
@@ -130,7 +137,7 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
     Sentry.withScope(callback);
   }
 
-   withIsolationScope(callback: (scope: Sentry.Scope) => void): void {
+  withIsolationScope(callback: (scope: Sentry.Scope) => void): void {
     Sentry.withIsolationScope(callback);
   }
 
